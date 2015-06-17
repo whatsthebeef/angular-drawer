@@ -1,4 +1,4 @@
-/*! angular-drawer 0.0.1 */
+/*! angular-drawer 0.0.2 */
 /**!
  * AngularJS Drawer directive
  * @author Chungsub Kim <subicura@subicura.com>
