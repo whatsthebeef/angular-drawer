@@ -9,23 +9,21 @@
 
   angular.module('angular-drawer', [])
     .provider('drawer', function() {
-      var opts = {
+
+      var opts = {};
+
+      this.setOption = function (newOpts) {
+        angular.extend(opts, newOpts);
       };
 
-      return {
-        setOption: function (newOpts) {
-          angular.extend(opts, newOpts);
-        },
-        $get: function () {
-          return opts;
-        }
+      this.$get = function () {
+        return opts;
       };
     })
-    .directive('drawer', ['$window', '$rootScope', 'drawerProvider', 
-               function ($window, $rootScope, drawerProvider) {
+    .directive('drawer', ['$window', '$rootScope', 'drawer', function ($window, $rootScope, drawer) {
       var isInit = false;
 
-      var useBg = !!drawerProvider.$get().useBackground;
+      var useBg = !drawer.disableBackground;
       var bgEl, leftDrawerEl, rightDrawerEl;
       var bodyEl = angular.element(document.body);
       var DRAWER_MODE = {
