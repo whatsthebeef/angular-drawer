@@ -20,9 +20,11 @@
         }
       };
     })
-    .directive('drawer', ['$window', '$rootScope', function ($window, $rootScope) {
+    .directive('drawer', ['$window', '$rootScope', 'drawerProvider', 
+               function ($window, $rootScope, drawerProvider) {
       var isInit = false;
 
+      var useBg = !!drawerProvider.$get().useBackground;
       var bgEl, leftDrawerEl, rightDrawerEl;
       var bodyEl = angular.element(document.body);
       var DRAWER_MODE = {
@@ -33,7 +35,9 @@
 
       function onResize() {
         var height = angular.element($window)[0].innerHeight + 'px';
-        bgEl.css('height', height);
+        if(useBg) {
+          bgEl.css('height', height);
+        }
         if(leftDrawerEl) {
           leftDrawerEl.css('height', height);
         }
@@ -43,10 +47,12 @@
       }
 
       function init() {
-        bgEl = angular.element(document.createElement('div'));
-        bgEl.addClass('ng-drawer-bg');
-        bgEl.bind('click', function() { closeDrawer(DRAWER_MODE.ALL); });
-        angular.element(document.body).append(bgEl);
+        if(useBg) {
+          bgEl = angular.element(document.createElement('div'));
+          bgEl.addClass('ng-drawer-bg');
+          bgEl.bind('click', function() { closeDrawer(DRAWER_MODE.ALL); });
+          angular.element(document.body).append(bgEl);
+        }
 
         onResize();
         angular.element($window).bind('resize', onResize);
@@ -77,7 +83,9 @@
       }
 
       function openDrawer(mode) {
-        bgEl.addClass('active');
+        if(useBg) {
+          bgEl.addClass('active');
+        }
         bodyEl.addClass('ng-drawer-no-scroll');
 
         if(leftDrawerEl && 
@@ -91,7 +99,9 @@
       }
 
       function closeDrawer(mode) {
-        bgEl.removeClass('active');
+        if(useBg) {
+          bgEl.removeClass('active');
+        }
         bodyEl.removeClass('ng-drawer-no-scroll');
 
         if(leftDrawerEl && 
